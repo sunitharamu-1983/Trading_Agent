@@ -1,0 +1,10 @@
+# Python 3.14 compatible — uses latest wheels, no source compilation needed
+fastapi>=0.111.0
+uvicorn>=0.29.0
+yfinance>=0.2.40
+pandas>=2.2.0        # 3.0.3 already installed
+numpy>=1.26.0        # 2.4.5 already installed
+pydantic>=2.7.0
+httpx>=0.27.0
+pytest>=8.0.0
+hypothesis>=6.100.0
