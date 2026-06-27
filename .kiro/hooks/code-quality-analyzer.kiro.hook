@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Code Quality Analyzer",
+  "description": "Analyzes Python files for code quality issues whenever they are saved, checking for best practices, security concerns (like hardcoded secrets), and adherence to project conventions.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.py"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A Python file was just edited in this trading agent project. Please analyze it for:\n1. Code quality issues (unused imports, unclear variable names, missing docstrings)\n2. Security concerns (hardcoded API keys or secrets — these must go in .env, never in source files)\n3. Project convention violations (e.g., secrets in committed files, logic in wrong module per the structure guide)\n4. Common Python pitfalls (bare excepts, mutable default arguments, missing type hints where helpful)\n5. Agent-specific concerns (prompt injection risks, unhandled LLM errors, missing input validation)\n\nBe concise. List only real issues found, grouped by severity (critical, warning, suggestion). If the file looks clean, say so briefly."
+  }
+}

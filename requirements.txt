@@ -1,0 +1,7 @@
+python-dotenv==1.0.1
+tavily-python==0.5.1
+openai==1.40.0
+pandas==2.2.2
+numpy==1.26.4
+yfinance==0.2.40
+requests==2.32.3
