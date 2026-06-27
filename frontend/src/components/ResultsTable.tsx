@@ -17,13 +17,6 @@ interface ResultsTableProps {
 
 type StatusType = "success" | "info" | "stopped" | "error" | "warning" | "pending" | "in-progress";
 
-const SIGNAL_STATUS: Record<string, StatusType> = {
-  "Strong Buy": "success",
-  "Bullish":    "info",
-  "Neutral":    "stopped",
-  "Bearish":    "error",
-};
-
 // Plain-English buy recommendation derived from signal
 const BUY_ADVICE: Record<string, { text: string; detail: string; type: StatusType }> = {
   "Strong Buy": {

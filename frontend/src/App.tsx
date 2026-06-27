@@ -79,7 +79,7 @@ export default function App() {
                 <HowItWorksCard
                   icon="🔢"
                   title="Step 1 — Pick stocks"
-                  body='Click "Load Nifty 50" to auto-fill India\'s top 50 stocks, or type the names of stocks you\'re interested in.'
+                  body={`Click "Load Nifty 50" to auto-fill India's top 50 stocks, or type the names of stocks you're interested in.`}
                 />
                 <HowItWorksCard
                   icon="🔍"
@@ -126,7 +126,7 @@ export default function App() {
               header={
                 <Header
                   variant="h2"
-                  description='Don\'t know which stocks to check? Click "Load Nifty 50" to instantly analyze India\'s top 50 stocks.'
+                  description={`Don't know which stocks to check? Click "Load Nifty 50" to instantly analyze India's top 50 stocks.`}
                 >
                   Which stocks do you want to check?
                 </Header>
