@@ -25,6 +25,13 @@ Build a two-tier web application with a FastAPI backend that computes technical 
     - Implement `GET /api/health` returning `{"status": "ok"}`
     - _Requirements: 7.1, 7.3, 7.4_
 
+  - [ ] 1.4 Create `backend/watchlist.py` and expose `GET /api/watchlist`
+    - Define `NIFTY_50_TICKERS: list[str]` — static list of all 50 Nifty symbols with `.NS` suffix
+    - Add `WatchlistResponse` model to `backend/models.py` with field `tickers: list[str]`
+    - Implement `GET /api/watchlist` in `backend/main.py` returning `WatchlistResponse(tickers=NIFTY_50_TICKERS)`
+    - This endpoint lets the UI's "Load Nifty 50" button auto-populate the ticker input without manual entry
+    - _Requirements: 7.5_
+
 - [ ] 2. Indicator computation functions
   - [ ] 2.1 Implement `fetch_ohlcv` in `backend/analyzer.py`
     - Use `yf.download(ticker, period="90d", auto_adjust=True, progress=False)`

@@ -29,6 +29,7 @@ The two tiers communicate over HTTP. During development both run locally; the ba
 │  FastAPI  (uvicorn, port 8000)                 │
 │  ┌──────────────┐   ┌────────────────────────┐ │
 │  │  /api/analyze│   │  /api/health           │ │
+│  │  /api/watchlist   (GET, Nifty 50 list)   │ │
 │  └──────┬───────┘   └────────────────────────┘ │
 │         │                                       │
 │  ┌──────▼──────────────────────────────────┐   │
@@ -55,6 +56,7 @@ backend/
 ├── main.py               # FastAPI app, CORS, routes
 ├── analyzer.py           # Pure indicator + scoring logic
 ├── models.py             # Pydantic request/response models
+├── watchlist.py          # Nifty 50 ticker list
 ├── requirements.txt      # Pinned backend deps
 └── tests/
     ├── test_indicators.py   # Property-based + unit tests
@@ -106,6 +108,9 @@ class TickerResult(BaseModel):
 
 class AnalyzeResponse(BaseModel):
     results: list[TickerResult]
+
+class WatchlistResponse(BaseModel):
+    tickers: list[str]   # Nifty 50 symbols with .NS suffix, e.g. "RELIANCE.NS"
 ```
 
 ### `analyzer.py` — Indicator Logic
@@ -122,7 +127,8 @@ from models import TickerResult
 
 def fetch_ohlcv(ticker: str) -> pd.DataFrame:
     """Fetch 90 calendar days of daily OHLCV data. Returns DataFrame or raises."""
-    df = yf.download(ticker, period="90d", auto_adjust=True, progress=False)
+    df = yf.download(ticker, period="90d", auto_adjust=True, progress=False,
+                     multi_level_index=False)
     if df is None or df.empty:
         raise ValueError(f"No data returned for {ticker}")
     return df
@@ -246,8 +252,9 @@ def analyze_ticker(ticker: str) -> TickerResult:
 ```python
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from models import AnalyzeRequest, AnalyzeResponse, TickerResult
+from models import AnalyzeRequest, AnalyzeResponse, TickerResult, WatchlistResponse
 from analyzer import analyze_ticker
+from watchlist import NIFTY_50_TICKERS
 
 app = FastAPI(title="Bullish Ticker Analyzer")
 
@@ -261,6 +268,11 @@ app.add_middleware(
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
+
+@app.get("/api/watchlist", response_model=WatchlistResponse)
+def watchlist():
+    """Returns the Nifty 50 ticker list for UI auto-population."""
+    return WatchlistResponse(tickers=NIFTY_50_TICKERS)
 
 @app.post("/api/analyze", response_model=AnalyzeResponse)
 def analyze(request: AnalyzeRequest):

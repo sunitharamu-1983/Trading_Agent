@@ -26,6 +26,8 @@ The Bullish Ticker Analyzer is a full-stack web application that accepts a list 
 - **Ranked Results**: The list of Analysis Results sorted by bullishness score in descending order; ties are sorted alphabetically by ticker symbol.
 - **Bullish Signal**: A human-readable label derived from the bullishness score: score 4 = "Strong Buy", score 3 = "Bullish", score 1–2 = "Neutral", score 0 = "Bearish".
 - **NSE/BSE Ticker**: Indian exchange tickers use a suffix notation supported by yfinance — `.NS` for NSE (e.g., `RELIANCE.NS`) and `.BO` for BSE (e.g., `RELIANCE.BO`).
+- **Nifty 50**: The benchmark index of the 50 largest companies listed on the NSE. The application ships a static list of Nifty 50 tickers (with `.NS` suffix) in `backend/watchlist.py` for UI auto-population.
+- **WatchlistResponse**: A Pydantic response schema containing a `tickers: list[str]` field, returned by the `/api/watchlist` endpoint.
 - **Kite Chart URL**: The Zerodha Kite web chart URL for a ticker, constructed by stripping the `.NS` or `.BO` suffix and using the pattern `https://kite.zerodha.com/chart/ext/ciq/NSE:{SYMBOL}/EQ`. No API key or authentication is required to construct this link.
 
 ---
@@ -127,6 +129,7 @@ The Bullish Ticker Analyzer is a full-stack web application that accepts a list 
 2. THE Analyzer SHALL include a `backend/requirements.txt` listing all backend-specific dependencies with pinned versions, including `fastapi`, `uvicorn`, `yfinance`, `pandas`, and `numpy`.
 3. THE Analyzer SHALL configure CORS middleware to allow requests from `http://localhost:3000` and `http://localhost:5173` during development.
 4. THE Analyzer SHALL expose a GET endpoint at `/api/health` that returns HTTP 200 with a JSON body `{"status": "ok"}`.
+5. THE Analyzer SHALL expose a GET endpoint at `/api/watchlist` that returns HTTP 200 with a `WatchlistResponse` JSON body containing the static Nifty 50 ticker list (e.g. `["RELIANCE.NS", "TCS.NS", ...]`), allowing the UI to auto-populate the ticker input without the user having to type symbols manually.
 
 ---
 
